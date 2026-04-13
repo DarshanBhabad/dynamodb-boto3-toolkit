@@ -1,53 +1,106 @@
-# DynamoDB Boto3 Toolkit
+DynamoDB Python Wrapper (Boto3)
 
-A robust, production-lean Python module designed for high-performance DynamoDB operations. This project demonstrates best practices in schema design, indexing, and complex data operations using the `boto3` SDK.
+A modular, production-ready Python package for AWS DynamoDB operations. This project demonstrates advanced database patterns including composite keys, Global Secondary Indexes (GSI), ACID transactions, and conditional updates using the boto3 SDK.
 
-## 🚀 Features
+📌 Project Overview
 
-This package provides a wrapper around `boto3` to handle:
-* [cite_start]**Advanced Key Design**: Implementation of Composite Primary Keys (Partition Key + Sort Key) [cite: 31-33].
-* [cite_start]**Global Secondary Indexes (GSI)**: Efficient querying on non-key attributes [cite: 41-43].
-* [cite_start]**Conditional Updates**: Prevents data overwrites with attribute-based conditions[cite: 93].
-* [cite_start]**Batch Operations**: High-throughput data ingestion using `batch_writer`[cite: 126].
-* [cite_start]**ACID Transactions**: Ensures data integrity across multiple operations[cite: 134].
-* [cite_start]**Pagination**: Built-in support for scanning large datasets using `LastEvaluatedKey`[cite: 116].
-* [cite_start]**Centralized Error Handling**: Custom management for AWS-specific exceptions like `ProvisionedThroughputExceededException`[cite: 156].
+The goal of this project is to provide a robust interface for managing a StudentCourses table. It moves beyond simple CRUD by implementing efficient pagination, batch processing, and error-handling mechanisms suitable for real-world cloud applications.
 
-## 📂 Project Structure
+🛠 Tech Stack
 
-The project is modularized to separate concerns:
-```text
+Language: Python 3.x
+
+SDK: Boto3 (AWS SDK for Python)
+
+Database: Amazon DynamoDB
+
+Cloud Provider: Amazon Web Services (AWS)
+
+📂 Project Structure
+
 Practical_4_dynamodb/
-├── dynamodb_module/
-│   ├── __init__.py
-│   ├── batch_operations.py      # Logic for batch_put_item
-│   ├── config.py                # AWS resource and client initialization
-│   ├── crud_operations.py       # Standard Put, Get, Update, Delete, Query
-│   ├── error_handler.py         # AWS exception logic and retries
-│   ├── table_manager.py         # Table creation and GSI configuration
-│   └── transaction_operations.py # TransactWriteItems implementation
-└── main.py                      # Application entry point
-[cite_start]
-http://googleusercontent.com/immersive_entry_chip/0
+│
+├── dynamodb_module/           # Core Package
+│   ├── __init__.py            # Module initialization
+│   ├── config.py              # AWS Client/Resource configuration
+│   ├── table_manager.py       # Table creation & GSI setup
+│   ├── crud_operations.py      # Item management (Query, Scan, Update)
+│   ├── batch_operations.py     # High-throughput batch writes
+│   ├── transaction_operations.py # ACID transaction logic
+│   └── error_handler.py       # AWS exception handling logic
+│
+└── main.py                    # Execution entry point
 
-### Configuration
-[cite_start]The project is configured to use the `ap-south-1` (Mumbai) region by default[cite: 21]. You can modify this in `dynamodb_module/config.py`.
 
-## 💻 Usage Examples
+📐 Database Design
 
-### 1. Conditional Updates
-Updates marks only if the new value meets specific criteria, ensuring data consistency:
-```python
-update_marks(student_id="S101", course_id="C001", new_marks=90)
+Table: StudentCourses
 
-http://googleusercontent.com/immersive_entry_chip/1
-http://googleusercontent.com/immersive_entry_chip/2
-http://googleusercontent.com/immersive_entry_chip/3
+Key Type
 
----
+Attribute Name
 
-### A Few Quick Observations from your Code:
-* **Efficiency**: In your `crud_operations.py`, you used `ConditionExpression="marks <:m"`[cite: 93]. This is a great "production-lean" touch—it ensures you aren't accidentally downgrading a student's score if a stale update request comes in.
-* **Reliability**: Your `error_handler.py` includes a `time.sleep(2)` for throughput exceptions[cite: 158]. While simple, this manual backoff is exactly what's needed to handle "bursty" traffic in DynamoDB.
+Data Type
 
-How are you planning to handle the AWS credentials for this repo—are you using an IAM role or local environment variables?
+Partition Key (PK)
+
+student_id
+
+String (S)
+
+Sort Key (SK)
+
+course_id
+
+String (S)
+
+Global Secondary Index (GSI)
+
+Index Name: StatusIndex
+
+Partition Key: status (S)
+
+Projection: ALL (Enables efficient querying of students by their enrollment status).
+
+🚀 Key Features
+
+1. Production-Lean Operations
+
+Conditional Updates: The update_marks function ensures data integrity by only updating if the new marks are higher than the existing ones (ConditionExpression).
+
+Pagination: Handles large dataset scanning using the LastEvaluatedKey token to prevent memory overflows.
+
+Batch Processing: Utilizes batch_writer() to group multiple put operations, reducing the number of network calls.
+
+2. ACID Transactions
+
+Implements transact_write_items to ensure all-or-nothing operations, critical for maintaining consistency across complex data workflows.
+
+3. Robust Error Handling
+
+Centralized handle_error function manages common AWS exceptions:
+
+ProvisionedThroughputExceededException (with retry logic).
+
+ConditionalCheckFailedException.
+
+⚙️ Setup & Usage
+
+Configure AWS Credentials:
+Ensure your AWS CLI is configured with aws configure.
+
+Install Dependencies:
+
+pip install boto3
+
+
+Run the Application:
+
+python main.py
+
+
+👨‍💻 Author
+
+Darshan Ganesh Bhabad 
+
+Cloud Native Applications 
