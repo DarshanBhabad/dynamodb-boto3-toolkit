@@ -6,10 +6,7 @@ A robust, production-lean Python module for AWS DynamoDB. This project provides 
 
 ## 👤 Author Details
 
-- **Name:** Darshan Ganesh Bhabad  
-- **PRN:** 202301040169  
-- **Subject:** Cloud Native Applications  
-- **Practical No:** 4  
+ **Darshan Ganesh Bhabad**   
 
 ---
 
@@ -137,6 +134,4 @@ python main.py
 
 ---
 
-## 📜 License
 
-This project is part of the academic curriculum for the **Cloud Native Applications** course.
